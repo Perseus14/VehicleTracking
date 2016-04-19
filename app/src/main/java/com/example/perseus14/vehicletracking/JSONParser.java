@@ -85,6 +85,7 @@ public class JSONParser {
             try {
                 String query = getPostDataString(postDataParams);
                 URL url = new URL(requestURL + "?" + query);
+                System.out.println(requestURL + "?" + query);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000 /* milliseconds */);
                 conn.setConnectTimeout(15000 /* milliseconds */);

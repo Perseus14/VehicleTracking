@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,6 +37,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private static String TAG_SUCCESS = "success";
     JSONParser jsonParser= new JSONParser();
+    Boolean flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,38 +93,42 @@ public class SignUpActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            HashMap<String,String> data = new HashMap<>();
-            data.put("value_username",value_username);
-            data.put("value_email",value_email);
-            data.put("value_password",value_password);
-            data.put("value_re_password",value_re_password);
+            if(value_password.equals(value_re_password)) {
+                HashMap<String, String> data = new HashMap<>();
+                data.put("value_username", value_username);
+                data.put("value_email", value_email);
+                data.put("value_password", value_password);
+                data.put("value_re_password", value_re_password);
 
-            try {
-                JSONObject json = jsonParser.makeHttpRequest(Config.URL_CREATE_USER,"POST", data);
+                try {
+                    JSONObject json = jsonParser.makeHttpRequest(Config.URL_CREATE_USER, "POST", data);
 
-                // check log cat fro response
-                Log.d("Create Response", json.toString());
+                    // check log cat fro response
+                    Log.d("Create Response", json.toString());
 
-                int success = json.getInt(TAG_SUCCESS);
+                    int success = json.getInt(TAG_SUCCESS);
 
-                if (success == 1) {
-                    // successfully created product
-                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(i);
+                    if (success == 1) {
+                        // successfully created product
+                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(i);
 
-                    // closing this screen
-                    finish();
-                } else {
-                    // failed to create product
-                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SignUpActivity.this);
-                    dialogBuilder.setMessage("Something went wrong :( ");
-                    dialogBuilder.setPositiveButton("Ok", null);
-                    dialogBuilder.show();
+                        // closing this screen
+                        finish();
+                    } else {
+                        // failed to create product
+                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SignUpActivity.this);
+                        dialogBuilder.setMessage("Something went wrong :( ");
+                        dialogBuilder.setPositiveButton("Ok", null);
+                        dialogBuilder.show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-
+            else{
+                flag = true;
+            }
             return null;
         }
 
@@ -132,6 +138,8 @@ public class SignUpActivity extends AppCompatActivity {
         protected void onPostExecute(String file_url) {
             // dismiss the dialog once done
             pDialog.dismiss();
+            if (flag)
+                Toast.makeText(SignUpActivity.this,"Password is not matching",Toast.LENGTH_LONG).show();
         }
     }
 
