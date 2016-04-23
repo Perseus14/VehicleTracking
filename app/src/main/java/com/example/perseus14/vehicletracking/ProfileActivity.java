@@ -149,6 +149,7 @@ public class ProfileActivity extends AppCompatActivity
 
         @Override
         protected String doInBackground(String... params) {
+            requestList.clear();
             HashMap<String,String> data = new HashMap<>();
             data.put("bus_num",bus_num);
 
@@ -312,14 +313,17 @@ public class ProfileActivity extends AppCompatActivity
     }
 
     void plotPointsOnMap(){
+        mMap.clear();
         for(int i=0;i<requestList.size();i++){
             LatLng latLng1 = new LatLng(Double.parseDouble(requestList.get(i).get("bus_lat")),Double.parseDouble(requestList.get(i).get("bus_long")));
             MarkerOptions marker = new MarkerOptions();
             marker.position(latLng1);
+
             int occupancyLevel = Integer.parseInt(requestList.get(i).get("bus_occupancy_level"));
+            System.out.println(occupancyLevel);
             if(occupancyLevel == 0){
-                //marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.busstop));
+                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                //marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.busstop));
                 marker.title("Regis Num: " + requestList.get(i).get("bus_reg_num") + "Occupancy: Less");
             }
             else if(occupancyLevel == 1){
@@ -331,6 +335,7 @@ public class ProfileActivity extends AppCompatActivity
                 marker.title("Regis Num: " + requestList.get(i).get("bus_reg_num") + "Occupancy: High");
             }
             mMap.addMarker(marker);
+
         }
     }
 }

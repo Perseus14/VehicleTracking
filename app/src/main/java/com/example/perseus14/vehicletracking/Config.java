@@ -14,4 +14,9 @@ public class Config {
     public static String URL_SEARCH_BUS = "http://vehicletracking.netau.net/search_bus.php";
     public static String URL_UPDATE_BUS_COORDINATES = "http://vehicletracking.netau.net/update_bus_coordinates.php";
     public static String URL_FB_LOGIN = "http://vehicletracking.netau.net/fb_login.php";
+    public static String URL_BUS_LOGOUT = "http://vehicletracking.netau.net/bus_logout.php";
+    public static String URL_UPDATE_OCCUPANCY_HIGH = "http://vehicletracking.netau.net/bus_occupancy_high.php";
+    public static String URL_UPDATE_OCCUPANCY_LOW = "http://vehicletracking.netau.net/bus_occupancy_low.php";
+    public static String URL_UPDATE_OCCUPANCY_MEDIUM = "http://vehicletracking.netau.net/bus_occupancy_medium.php";
+
 }

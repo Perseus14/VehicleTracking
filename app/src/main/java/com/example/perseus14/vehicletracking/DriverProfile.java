@@ -66,6 +66,8 @@ public class DriverProfile extends AppCompatActivity implements ConnectionCallba
 
     TextView bus_ser_num,bus_reg_num,bus_occup_level;
 
+    Button btnLow,btnMedium,btnHigh;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +81,8 @@ public class DriverProfile extends AppCompatActivity implements ConnectionCallba
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                stopLocationUpdates();
+                new BusLogout().execute(Config.URL_BUS_LOGOUT);
                 userLocalStore.clearBusData();
                 Intent intent = new Intent(DriverProfile.this,MainActivity.class);
                 startActivity(intent);
@@ -92,6 +96,28 @@ public class DriverProfile extends AppCompatActivity implements ConnectionCallba
 
         lblLocation = (TextView) findViewById(R.id.lblLocation);
         btnStartLocationUpdates = (Button) findViewById(R.id.btnLocationUpdates);
+        btnLow = (Button) findViewById(R.id.low);
+        btnHigh = (Button) findViewById(R.id.high);
+        btnMedium = (Button) findViewById(R.id.medium);
+
+        btnMedium.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new UpdateOccupancyMedium().execute(Config.URL_UPDATE_OCCUPANCY_MEDIUM);
+            }
+        });
+        btnHigh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new UpdateOccupancyHigh().execute(Config.URL_UPDATE_OCCUPANCY_HIGH);
+            }
+        });
+        btnLow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new UpdateOccupancyLow().execute(Config.URL_UPDATE_OCCUPANCY_LOW);
+            }
+        });
 
         // First we need to check availability of play services
         if (checkPlayServices()) {
@@ -321,6 +347,62 @@ public class DriverProfile extends AppCompatActivity implements ConnectionCallba
                     System.out.println("Successfully updated " + i);
                     i++;
                 }
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+
+    class UpdateOccupancyLow extends AsyncTask<String, String, String>{
+        @Override
+        protected String doInBackground(String... params) {
+            HashMap<String,String> data = new HashMap<>();
+            data.put("id",String.valueOf(modelBusData.id));
+            try{
+                jsonParser.makeHttpRequest(Config.URL_UPDATE_OCCUPANCY_LOW,"POST",data);
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+    class UpdateOccupancyMedium extends AsyncTask<String, String, String>{
+        @Override
+        protected String doInBackground(String... params) {
+            HashMap<String,String> data = new HashMap<>();
+            data.put("id",String.valueOf(modelBusData.id));
+            try{
+                jsonParser.makeHttpRequest(Config.URL_UPDATE_OCCUPANCY_MEDIUM,"POST",data);
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    class UpdateOccupancyHigh extends AsyncTask<String, String, String>{
+        @Override
+        protected String doInBackground(String... params) {
+            HashMap<String,String> data = new HashMap<>();
+            data.put("id",String.valueOf(modelBusData.id));
+            try{
+                jsonParser.makeHttpRequest(Config.URL_UPDATE_OCCUPANCY_HIGH,"POST",data);
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    class BusLogout extends AsyncTask<String, String, String>{
+        @Override
+        protected String doInBackground(String... params) {
+            HashMap<String,String> data = new HashMap<>();
+            data.put("id",String.valueOf(modelBusData.id));
+            try{
+                jsonParser.makeHttpRequest(Config.URL_BUS_LOGOUT,"POST",data);
             } catch (JSONException e){
                 e.printStackTrace();
             }
