@@ -26,6 +26,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText email;
     EditText password;
     EditText re_password;
+    EditText mobile_num;
 
     Button btnRegister;
     ProgressDialog pDialog;
@@ -34,6 +35,7 @@ public class SignUpActivity extends AppCompatActivity {
     String value_email;
     String value_password;
     String value_re_password;
+    String value_mobilenum;
 
     private static String TAG_SUCCESS = "success";
     JSONParser jsonParser= new JSONParser();
@@ -60,6 +62,7 @@ public class SignUpActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
         re_password = (EditText) findViewById(R.id.re_password);
+        mobile_num = (EditText) findViewById(R.id.mobileNum);
 
         btnRegister = (Button) findViewById(R.id.btnSignup);
 
@@ -87,7 +90,7 @@ public class SignUpActivity extends AppCompatActivity {
             value_email = email.getText().toString();
             value_password = password.getText().toString();
             value_re_password = re_password.getText().toString();
-
+            value_mobilenum = mobile_num.getText().toString();
         }
 
         @Override
@@ -99,6 +102,7 @@ public class SignUpActivity extends AppCompatActivity {
                 data.put("value_email", value_email);
                 data.put("value_password", value_password);
                 data.put("value_re_password", value_re_password);
+                data.put("value_mobilenum",value_mobilenum);
 
                 try {
                     JSONObject json = jsonParser.makeHttpRequest(Config.URL_CREATE_USER, "POST", data);
@@ -142,5 +146,4 @@ public class SignUpActivity extends AppCompatActivity {
                 Toast.makeText(SignUpActivity.this,"Password is not matching",Toast.LENGTH_LONG).show();
         }
     }
-
 }

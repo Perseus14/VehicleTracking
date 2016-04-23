@@ -10,4 +10,6 @@ public class ModelUser implements Serializable {
     public String email;
     public String password;
     public int id;
+    public int bus_radius;
+    public String mobile_num;
 }

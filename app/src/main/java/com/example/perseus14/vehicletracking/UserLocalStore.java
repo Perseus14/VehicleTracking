@@ -22,6 +22,8 @@ public class UserLocalStore {
         userLocalDatabaseEditor.putString("password", user.password);
         userLocalDatabaseEditor.putString("email", user.email);
         userLocalDatabaseEditor.putInt("id", user.id);
+        userLocalDatabaseEditor.putInt("bus_radius",user.bus_radius);
+        userLocalDatabaseEditor.putString("mobile_num", user.mobile_num);
 
         userLocalDatabaseEditor.commit();
     }
@@ -73,7 +75,8 @@ public class UserLocalStore {
         user.password = userLocalDatabase.getString("password", "");
         user.email = userLocalDatabase.getString("email", "");
         user.id = userLocalDatabase.getInt("id", -1);
-
+        user.bus_radius = userLocalDatabase.getInt("bus_radius", -1);
+        user.mobile_num = userLocalDatabase.getString("mobile_num","");
 
         return user;
     }

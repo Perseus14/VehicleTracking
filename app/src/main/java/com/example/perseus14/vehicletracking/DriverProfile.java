@@ -111,7 +111,15 @@ public class DriverProfile extends AppCompatActivity implements ConnectionCallba
             }
         });
 
-        bus_occup_level.setText("Bus Occupancy: " + String.valueOf(modelBusData.bus_occupancy_level));
+        if(modelBusData.bus_occupancy_level == 0){
+            bus_occup_level.setText("Bus Occupancy: low");
+        }
+        else if(modelBusData.bus_occupancy_level == 1){
+            bus_occup_level.setText("Bus Occupancy: Medium");
+        }
+        else{
+            bus_occup_level.setText("Bus Occupancy: High");
+        }
         bus_reg_num.setText("Bus Registraion Num: " + modelBusData.bus_reg_num);
         bus_ser_num.setText("Bus Service Num: " + modelBusData.bus_service_num);
     }

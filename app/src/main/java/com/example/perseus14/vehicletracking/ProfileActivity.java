@@ -1,5 +1,6 @@
 package com.example.perseus14.vehicletracking;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -31,6 +32,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -71,8 +73,11 @@ public class ProfileActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ProfileActivity.this);
+                dialogBuilder.setMessage("You will now receive a SMS notification if the bus comes closer");
+                dialogBuilder.setPositiveButton("Ok", null);
+                dialogBuilder.setTitle("SMS Notification");
+                dialogBuilder.show();
             }
         });
         userLocalStore = new UserLocalStore(this);
@@ -98,7 +103,7 @@ public class ProfileActivity extends AppCompatActivity
         email = (TextView) header.findViewById(R.id.email_id);
         mHandler  = new Handler();
 
-        //startRepeatingTask();
+        startRepeatingTask();
 
         name.setText(userLocalStore.getLoggedInUser().name);
         email.setText(userLocalStore.getLoggedInUser().email);
@@ -110,12 +115,11 @@ public class ProfileActivity extends AppCompatActivity
         });
     }
 
-    /*Runnable mHandlerTask = new Runnable() {
+    Runnable mHandlerTask = new Runnable() {
         @Override
         public void run() {
-            Toast.makeText(getApplicationContext(),"This is " + i + "time",Toast.LENGTH_LONG).show();
-            i++;
-            mHandler .postDelayed(mHandlerTask,5000);
+            new ShowBuses().execute(Config.URL_SEARCH_BUS);
+            mHandler.postDelayed(mHandlerTask,5000);
         }
     };
 
@@ -128,7 +132,7 @@ public class ProfileActivity extends AppCompatActivity
     void stopRepeatingTask()
     {
         mHandler.removeCallbacks(mHandlerTask);
-    }*/
+    }
 
     class ShowBuses extends AsyncTask<String,String,String> {
         @Override
@@ -227,15 +231,16 @@ public class ProfileActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-            fragment = new HomeFragment();
+
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
-
+            Intent intent = new Intent(this,AccountSettings.class);
+            startActivity(intent);
         } else if (id == R.id.nav_send) {
-            //stopRepeatingTask();
+            stopRepeatingTask();
             userLocalStore.clearUserData();
             userLocalStore.setUserLoggedIn(false);
             startActivity(new Intent(this,LoginActivity.class));
@@ -311,7 +316,20 @@ public class ProfileActivity extends AppCompatActivity
             LatLng latLng1 = new LatLng(Double.parseDouble(requestList.get(i).get("bus_lat")),Double.parseDouble(requestList.get(i).get("bus_long")));
             MarkerOptions marker = new MarkerOptions();
             marker.position(latLng1);
-            marker.title("Service Num: " + requestList.get(i).get("bus_service_num") + "Regis Num: " + requestList.get(i).get("bus_reg_num") + "Occupancy: "+ requestList.get(i).get("bus_occupancy_level"));
+            int occupancyLevel = Integer.parseInt(requestList.get(i).get("bus_occupancy_level"));
+            if(occupancyLevel == 0){
+                //marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.busstop));
+                marker.title("Regis Num: " + requestList.get(i).get("bus_reg_num") + "Occupancy: Less");
+            }
+            else if(occupancyLevel == 1){
+                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                marker.title("Regis Num: " + requestList.get(i).get("bus_reg_num") + "Occupancy: Medium");
+            }
+            else {
+                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                marker.title("Regis Num: " + requestList.get(i).get("bus_reg_num") + "Occupancy: High");
+            }
             mMap.addMarker(marker);
         }
     }

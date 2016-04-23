@@ -101,7 +101,8 @@ public class LoginActivity extends AppCompatActivity {
                                 returnedUser.name = user.getString("name");
                                 returnedUser.password = user.getString("password");
                                 returnedUser.email = user.getString("email");
-
+                                returnedUser.bus_radius = user.getInt("bus_radius");
+                                returnedUser.mobile_num = user.getString("mobile_num");
 
                                 userLocalStore.storeUserData(returnedUser);
                                 userLocalStore.setUserLoggedIn(true);
