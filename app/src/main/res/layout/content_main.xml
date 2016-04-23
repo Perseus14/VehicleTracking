@@ -17,7 +17,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Welcome to Real time BMTC bus Tracking APP!"
-        android:id="@+id/textView" />
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/signup" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/signup"
+        android:layout_centerHorizontal="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -28,14 +37,13 @@
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-shi
+
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="SignUp"
         android:id="@+id/signup"
-        android:layout_alignTop="@+id/login"
-        android:layout_alignRight="@+id/textView"
-        android:layout_alignEnd="@+id/textView" />
+        android:layout_below="@+id/textView"
+        android:layout_toEndOf="@+id/login_button" />
 </RelativeLayout>

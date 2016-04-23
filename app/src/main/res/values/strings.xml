@@ -44,6 +44,8 @@
     <string name="latitude_label">Latitude</string>
     <string name="longitude_label">Longitude</string>
 
+    <string name="facebook_app_id">763804960387532</string>
+
     <string name="no_location_detected">
         No location detected. Make sure location is enabled on the device.
     </string>
@@ -75,4 +77,5 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_driver_profile">DriverProfile</string>
     <string name="title_activity_account_settings">AccountSettings</string>
+    <string name="title_activity_fb">FbActivity</string>
 </resources>
