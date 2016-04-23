@@ -88,6 +88,8 @@ public class FbActivity extends AppCompatActivity {
                         }
 
                     } else {
+                        Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
+                        startActivity(i);
                         Log.v("Tag", "Signed up but not logged in");
                     }
 
